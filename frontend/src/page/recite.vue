@@ -8,12 +8,11 @@
                     <div class="words_en" v-if="model.translate==='ch'">
                         <div class="word_en">{{ item.en }} </div>
                         <input type="text" v-model.lazy="anwser[item.en]" style="border-bottom: 1px solid gray;outline: none;"/>
-                        <div class="result_icon">
-                            <div v-if="results[item.en] === false">
-                                <i class="el-icon-error" style="color:#f50808"></i>
-                            </div>
+                        <div class="result_icon" style="display:inline-block">
+                            <i class="el-icon-error" style="color:#f50808" v-if="results[item.en] === false"></i>
+                            <i class="el-icon-success" style="color:#91d46f" v-if="results[item.en] === true"></i>
                         </div>
-                        <div class="correct_word" v-if='results[item.en] == false'>
+                        <div class="correct_word" v-if='results[item.en] == false' :class="{word_trun:disp}">
                             <span style="font-size:10.5pt">{{ item.ch }}</span>
                         </div>
                     </div>
@@ -27,6 +26,7 @@
             <div class="after_result" v-if="show">
                 <button @click=change_word>换一批</button>
                 <button @click=correct_word>查看正确的单词</button>
+                <button @click=again>在试一次</button>
                 <button @click=save_word>保存错词</button>
             </div>
         </div>
@@ -47,6 +47,7 @@ export default {
             results:{},
             hidden: true,
             show: false,
+            disp: false,
         }
     },
  
@@ -80,13 +81,13 @@ export default {
                 for(let j in this.words){
                     if(en_word[i] === this.words[j].en){
                         if(this.words[j].ch.match(ch_word[i])){
-                            this.results[ch_word[i]] = true
+                            this.results[en_word[i]] = true
                         }else{
                             this.results[en_word[i]] = false
                         }
                     }
                 }
-            } 
+            }
             this.hidden = false;
             this.show = true;
         },
@@ -96,11 +97,31 @@ export default {
         },
 
         correct_word(){
-
+            this.disp = true
         },
 
         save_word(){
               
+        },
+
+        again(){
+            var i = 0
+            var random_word = []
+            var word_len = this.words.length
+            while(i < word_len){
+                let random_num = Math.round(Math.random()*(this.words.length-1))
+                random_word.push(this.words[random_num])
+                this.words.splice(random_num, 1)
+                i++
+            }
+            this.anwser = {}
+            this.results = {}
+            this.hidden = true
+            this.show = false
+            this.disp = false
+            this.words = random_word
+            console.log(this.words)
+            return
         }
 
     },
@@ -153,6 +174,10 @@ button{
     text-overflow: ellipsis;
     overflow: hidden;
     width: auto;
+    display: none;
+    margin-top: 10px;
+}
+.word_trun {
     display: block;
 }
 
