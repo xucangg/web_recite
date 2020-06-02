@@ -5,8 +5,8 @@
             <div>
                 <h3>词库已有 <span style="color:#1bff00b5">{{wordslength.total}}</span> 单词</h3>
                     <el-row>
-                        <el-col :span='12' class="type"><span>cte4: {{wordslength.countcte4}}</span></el-col>
-                        <el-col :span='12' class="type"><span>cte6: {{wordslength.countcte6}}</span></el-col>
+                        <el-col :span='12' class="type">cte4: <span style="color:#f56c6c">{{wordslength.countcte4}}</span></el-col>
+                        <el-col :span='12' class="type">cte6: <span style="color:#f56c6c">{{wordslength.countcte6}}</span></el-col>
                     </el-row>    
             </div>
             <h2><a href="/#/model">点击开始</a></h2>

@@ -6,8 +6,8 @@
  import ElementUi from 'element-ui'
  import 'element-ui/lib/theme-chalk/index.css'
  import {Dropdown, DropdownMenu} from 'element-ui'
+ import store from './store/store'
 
-Vue.config.productionTip = false;
 Vue.use(ElementUi,Dropdown,DropdownMenu);
 
 /* eslint-disable no-new */
@@ -16,6 +16,7 @@ Vue.use(ElementUi,Dropdown,DropdownMenu);
   render: h => h(App),
   components: { App },
   router,
+  store,
   template: '<App/>'
 })
 

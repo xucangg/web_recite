@@ -21,7 +21,7 @@
         </el-row>
         <div class="result_menu">
             <div class="view_result" v-if="hidden" >
-                <button @click=view_result>查看结果</button>
+                <el-button :plain="true" @click=view_result>查看结果</el-button>
             </div>
             <div class="after_result" v-if="show">
                 <button @click=change_word>换一批</button>
@@ -62,20 +62,19 @@ export default {
             console.log(this.$route.params)
             generate({level:this.model.level,num:this.model.num}).then((response)=>{
                 this.words = response.data
-                console.log(response.data)
             })
         },
 
         view_result(){
             let en_word = Object.keys(this.anwser)
             if(en_word.length != this.words.length){
-                alert('请填写完所有单词')
+                this.$message("请填写完所有单词")
                 return
             }
             let ch_word = Object.values(this.anwser)
             for(let i in ch_word){
                 if(ch_word[i] === ""){
-                    alert("请填写完所有单词")
+                    this.$message("请填写完所有单词")
                     return
                 }
                 for(let j in this.words){
@@ -179,6 +178,14 @@ button{
 }
 .word_trun {
     display: block;
+}
+
+.el-message__icon{
+    color: red !important;
+}
+
+.el-message__content{
+    color:red !important;
 }
 
 </style>

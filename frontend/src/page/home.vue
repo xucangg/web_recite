@@ -14,6 +14,11 @@ export default {
     components:{
         headTop,
         began,
+    },
+    
+    data(){
+        return{
+        }
     }
 }
 </script>

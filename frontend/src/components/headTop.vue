@@ -36,10 +36,20 @@
 			<div class="menu-block"></div>
 			<div class="user menu-a">
 				<el-dropdown>
-					<el-avatar ></el-avatar>
-						<el-dropdown-menu>
-							<el-dropdown-item>信息</el-dropdown-item>
-							<el-dropdown-item>登出</el-dropdown-item>
+						<span>
+							<img class="avatar" src='../static/svg/avatar.jpg'>
+						</span>
+						<el-dropdown-menu v-if="userInfo.name">
+							<el-dropdown-item style="pointer-events:none">
+								<p>用户 :<span style="margin-left:5px">{{ userInfo.name }}</span></p>
+							</el-dropdown-item>
+							<el-dropdown-item>个人信息</el-dropdown-item>
+							<a @click="view_wrong_words"><el-dropdown-item>错词查看</el-dropdown-item></a>
+							<a @click="logout"><el-dropdown-item>退出登录</el-dropdown-item></a>
+						</el-dropdown-menu>
+						<el-dropdown-menu v-else>
+							<a href="/#/register"><el-dropdown-item >注册</el-dropdown-item></a>
+							<a href="/#/login"><el-dropdown-item>登入</el-dropdown-item></a>
 						</el-dropdown-menu>
 				</el-dropdown>
 			</div>
@@ -48,11 +58,28 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import cookie from '../static/js/cookie'
 export default {
-	data(){
-		return {
+	computed:{
+		...mapGetters({
+			userInfo:'userInfo'
+		})
+	},
+	
+	methods:{
+		logout(){
+			cookie.delCookie('name')
+			cookie.delCookie('token')
+			this.$store.dispatch('setInfo')
+			this.$router.push('/login')
+		},
+
+		view_wrong_words(){
+
 		}
 	}
+
 }
 </script>
 
@@ -106,28 +133,15 @@ export default {
 	flex-grow: 1;
     height: 100%;
 	}
-	
+
+	.login-button>span{
+		color: #67c23a;
+	}
+	.avatar{
+		border-radius: 98px;
+		height: 36px;
+		border-style: none;
+	}
+
 
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
