@@ -45,7 +45,6 @@
 import headTop from '../components/headTop'
 
 export default {
-    inject: ['reload'],
     data(){
         return {
             level: "",
@@ -60,6 +59,18 @@ export default {
             if (this.num > 20){
                 alert('最多生成20个单词')
                 this.num = null
+                return
+            }
+            if(this.level === ''){
+                this.$message("请选择单词等级")
+                return
+            }
+            if(this.translate === ''){
+                this.$message('请选择默写模式')
+                return
+            }
+            if(this.num === ''){
+                this.$message('请填写单词数量')
                 return
             }
             this.$router.push({name:'recite', params:{

@@ -26,6 +26,7 @@ export default {
         cte6(){
             wordslist({type:'cte6'}).then((Response)=>{
                 this.cte6_words = Response.data
+                console.log(Response)
             })
         }
     }

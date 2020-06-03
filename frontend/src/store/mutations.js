@@ -4,7 +4,7 @@ import cookie from '../static/js/cookie';
 export default {
     [SET_INFO] (state) {
         state.userInfo = {
-            name:cookie.getCookie('name'),
+            name:cookie.getCookie('username'),
             token:cookie.getCookie('token')
         }
         console.log(state.userInfo);

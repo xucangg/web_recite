@@ -19,11 +19,15 @@ class WordList(ListCreateAPIView, RetrieveModelMixin, GenericAPIView):
     def get_queryset(self):
         if self.request.GET['type'] == 'cte4':
             cte4_words = Cte4.objects.all()
+            #c4_words = list(cte4_words)
             return cte4_words
-        if self.request.data['type'] == 'cte6':
+        if self.request.GET['type'] == 'cte6':
             cte6_words = Cte6.objects.all()
+            #c6_words = list(cte6_words)
             return cte6_words
+
     serializer_class = WdSerializer
+
 
 class AcountWords(ListCreateAPIView, RetrieveModelMixin, GenericAPIView):
     queryset = CountWords.objects.all()

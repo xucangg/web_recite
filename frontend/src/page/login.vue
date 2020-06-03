@@ -46,10 +46,16 @@ export default{
                 that.$store.dispatch('setInfo')
                 that.$router.push({ name: 'home'})
             }).catch(function(error){
-                console.log(error.response)
+                error
                 that.$message("邮箱或密码错误")
             })
         }
+    },
+
+    created(){
+        cookie.delCookie('name')
+        cookie.delCookie('token')
+        this.$store.dispatch('setInfo')
     }
 }
 </script>

@@ -6,7 +6,7 @@ from .models import Cte4, Cte6, CountWords
 
 class WdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cte4, Cte6
+        model = Cte4
         fields = '__all__'
 
 class Wdcount(serializers.ModelSerializer):

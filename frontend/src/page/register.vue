@@ -33,6 +33,7 @@
 </template>
 <script>
 import { register } from '../axios/axios'
+import cookie from '../static/js/cookie'
 export default{
     data(){
         return{
@@ -56,8 +57,8 @@ export default{
                 password:this.password
                 }
             register(info).then((Response)=>{
-                document.cookie = 'token' + "=" + Response.data.token
-                document.cookie = 'username' + "=" + Response.data.username
+                cookie.setCookie('username',Response.data.username,7)
+                cookie.setCookie('token',Response.data.token,7)
                 that.$store.dispatch('setInfo')
                 that.$router.push({ name: 'home'})
             }).catch(function(error){

@@ -16,7 +16,17 @@
                             <span style="font-size:10.5pt">{{ item.ch }}</span>
                         </div>
                     </div>
-                    <div class="words_ch" v-if="model.translate==='en'">{{ item.ch }}</div>
+                    <div class="words_ch" v-if="model.translate==='en'">
+                        <div class="word_ch" :title="item.ch">{{ item.ch }}</div>
+                        <input type="text" v-model.lazy="anwser[item.ch]" style="border-bottom: 1px solid gray;outline: none;"/>
+                        <div class="result_icon" style="display:inline-block">
+                            <i class="el-icon-error" style="color:#f50808" v-if="results[item.ch] === false"></i>
+                            <i class="el-icon-success" style="color:#91d46f" v-if="results[item.ch] === true"></i>
+                        </div>
+                        <div class="correct_word" v-if='results[item.ch] == false' :class="{word_trun:disp}">
+                            <span style="font-size:10.5pt">{{ item.en }}</span>
+                        </div>
+                    </div>
             </el-col>
         </el-row>
         <div class="result_menu">
@@ -59,40 +69,56 @@ export default {
     methods:{
         getwords(){
             this.model = this.$route.params
-            console.log(this.$route.params)
             generate({level:this.model.level,num:this.model.num}).then((response)=>{
                 this.words = response.data
             })
         },
 
         view_result(){
-            let en_word = Object.keys(this.anwser)
-            if(en_word.length != this.words.length){
+            let k_word = Object.keys(this.anwser)
+            if(k_word.length != this.words.length){
                 this.$message("请填写完所有单词")
                 return
             }
-            let ch_word = Object.values(this.anwser)
-            for(let i in ch_word){
-                if(ch_word[i] === ""){
+            let v_word = Object.values(this.anwser)
+            for(let i in v_word){
+                if(v_word[i] === ""){
                     this.$message("请填写完所有单词")
                     return
                 }
-                for(let j in this.words){
-                    if(en_word[i] === this.words[j].en){
-                        if(this.words[j].ch.match(ch_word[i])){
-                            this.results[en_word[i]] = true
-                        }else{
-                            this.results[en_word[i]] = false
+            if(this.model.translate === 'ch'){
+                for(let i in v_word){
+                    for(let j in this.words){
+                        if(k_word[i] === this.words[j].en){
+                            if(this.words[j].ch.match(v_word[i])){
+                            this.results[k_word[i]] = true
+                            }else{
+                            this.results[k_word[i]] = false
+                            }
+                    }
+                }
+                }
+            }
+            if(this.model.translate === 'en'){
+                for(let i in v_word){
+                    for(let j in this.words){
+                        if(k_word[i] === this.words[j].ch){
+                            if(this.words[j].en.match(v_word[i])){
+                            this.results[k_word[i]] = true
+                            }else{
+                            this.results[k_word[i]] = false
                         }
                     }
                 }
+                }
+            }
             }
             this.hidden = false;
             this.show = true;
         },
 
         change_word(){
-
+            console.log(this.$store)
         },
 
         correct_word(){
@@ -156,6 +182,19 @@ export default {
 .words_en{
     padding-left: 10px;
 }
+
+.word_ch{
+    display: inline-block;
+    padding-right: 10px;
+    font-size: 12px;
+    padding: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100px;
+}
+
+
 
 .result_menu{
     margin-top: 50px;

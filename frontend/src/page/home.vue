@@ -15,10 +15,5 @@ export default {
         headTop,
         began,
     },
-    
-    data(){
-        return{
-        }
-    }
 }
 </script>
