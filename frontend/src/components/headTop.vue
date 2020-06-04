@@ -11,7 +11,7 @@
 			</div>
 			<div class="menu-block"></div>
 			<div class="menu-a">
-				<a class="menu-u" href='/#/vocabulary'>	
+				<a class="menu-u" href='/vocabulary'>	
 					<el-dropdown>
 					<div class="menu-s">
 						<img src='../static/svg/words.svg'/>
@@ -26,7 +26,7 @@
 			</div>
 			<div class="menu-block"></div>
 			<div class="menu-a">
-				<a class="menu-u" href='/#/model'>
+				<a class="menu-u" href='/model'>
 					<div class="abc menu-s">
 						<img src='../static/svg/model.svg'/>
 						<span class='menu-f'>模式</span>
@@ -48,8 +48,8 @@
 							<a @click="logout"><el-dropdown-item>退出登录</el-dropdown-item></a>
 						</el-dropdown-menu>
 						<el-dropdown-menu v-else>
-							<a href="/#/register"><el-dropdown-item >注册</el-dropdown-item></a>
-							<a href="/#/login"><el-dropdown-item>登入</el-dropdown-item></a>
+							<a href="/register"><el-dropdown-item >注册</el-dropdown-item></a>
+							<a href="/login"><el-dropdown-item>登入</el-dropdown-item></a>
 						</el-dropdown-menu>
 				</el-dropdown>
 			</div>

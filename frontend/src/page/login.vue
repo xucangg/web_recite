@@ -41,6 +41,7 @@ export default{
                 password:this.password
                 }
             login(info).then((Response)=>{
+                console.log(Response.data)
                 cookie.setCookie('name',Response.data.username,1)
                 cookie.setCookie('token',Response.data.token,1)
                 that.$store.dispatch('setInfo')
@@ -316,5 +317,8 @@ export default{
 }
 .form-p > a:hover{
     color:#666;
+}
+.form-box{
+    box-sizing: content-box;
 }
 </style>

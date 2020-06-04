@@ -10,7 +10,7 @@ import cookie from '../static/js/cookie'
 Vue.use(Vuex)
 
 const userInfo = {
-    name:cookie.getCookie('username')||'',
+    name:cookie.getCookie('name')||'',
     token:cookie.getCookie('token')||''
 }
 

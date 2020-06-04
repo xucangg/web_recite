@@ -9,7 +9,7 @@
                         <el-col :span='12' class="type">cte6: <span style="color:#f56c6c">{{wordslength.countcte6}}</span></el-col>
                     </el-row>    
             </div>
-            <h2><a href="/#/model">点击开始</a></h2>
+            <h2><a href="/model">点击开始</a></h2>
         </div>
         <div class="logined" hidden="true">
             <h1>欢迎回来</h1>

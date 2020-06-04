@@ -57,7 +57,7 @@ export default{
                 password:this.password
                 }
             register(info).then((Response)=>{
-                cookie.setCookie('username',Response.data.username,7)
+                cookie.setCookie('name',Response.data.username,7)
                 cookie.setCookie('token',Response.data.token,7)
                 that.$store.dispatch('setInfo')
                 that.$router.push({ name: 'home'})
@@ -327,5 +327,8 @@ export default{
 }
 .form-p > a:hover{
     color:#666;
+}
+.form-box{
+    box-sizing: content-box;
 }
 </style>

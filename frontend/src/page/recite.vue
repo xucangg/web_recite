@@ -34,10 +34,10 @@
                 <el-button :plain="true" @click=view_result>查看结果</el-button>
             </div>
             <div class="after_result" v-if="show">
-                <button @click=change_word>换一批</button>
-                <button @click=correct_word>查看正确的单词</button>
-                <button @click=again>在试一次</button>
-                <button @click=save_word>保存错词</button>
+                <el-button :plain="true" @click=change_word>换一批</el-button>
+                <el-button :plain="true"  @click=correct_word>查看正确的单词</el-button>
+                <el-button :plain="true"  @click=again>在试一次</el-button>
+                <el-button :plain="true"  @click=save_word>保存错词</el-button>
             </div>
         </div>
     </div>
@@ -77,13 +77,13 @@ export default {
         view_result(){
             let k_word = Object.keys(this.anwser)
             if(k_word.length != this.words.length){
-                this.$message("请填写完所有单词")
+                this.$message("请填写完所有单词(不会随便填)")
                 return
             }
             let v_word = Object.values(this.anwser)
             for(let i in v_word){
                 if(v_word[i] === ""){
-                    this.$message("请填写完所有单词")
+                    this.$message("请填写完所有单词(不会随便填)")
                     return
                 }
             if(this.model.translate === 'ch'){
@@ -118,7 +118,10 @@ export default {
         },
 
         change_word(){
-            console.log(this.$store)
+            if(this.$store.state.userInfo.name ==''){
+                this.$message('你还未登入，请登入后使用')
+                return
+            }
         },
 
         correct_word(){
@@ -126,7 +129,10 @@ export default {
         },
 
         save_word(){
-              
+            if(this.$store.state.userInfo.name ==''){
+                this.$message('你还未登入，请登入后使用')
+                return
+            }            
         },
 
         again(){
