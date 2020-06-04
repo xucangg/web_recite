@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let host = 'http://127.0.0.1:8080'
+let host = 'http://149.28.229.181:8080'
 
 export const words = () => {return axios.get(`${host}/wordslength/`)}
 
