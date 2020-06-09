@@ -7,11 +7,11 @@
                 <h3>选择词汇级别：</h3>
                 <ul>
                     <li>
-                        <input type="radio" name="level" v-model="level" value="cte-4">
+                        <input type="radio" name="level" v-model="level" value="Cte4">
                         <span>Cte-4</span>
                     <li>
                     <li>
-                        <input type="radio" name="level" v-model="level" value="cte-6">
+                        <input type="radio" name="level" v-model="level" value="Cte6">
                         <span>Cte-6</span>
                     </li>
                 </ul>

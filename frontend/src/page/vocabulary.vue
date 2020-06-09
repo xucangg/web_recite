@@ -1,33 +1,21 @@
 <template>
-    <div class="content">
+    <div class="words_content">
         <head-top></head-top>
-        <div>
-            <button @click="cte4">4级单词</button>
-            <button @click="cte6">6级单词</button>
+        <div class="words_menu">
+            <button @click="words_list" value="cte4">4级单词</button>
+            <button @click="words_list" value="cte6">6级单词</button>
         </div>
         <div class="views">
-            <div v-if="check==='cte4'">
-                <div class="view_style" v-for="item in cte4_words" v-bind:key="item.id">
-                    <div class="view_line">
-                        <div class="view_en">{{item.en}}</div>
+            <div class="view_style" v-for="item in words" v-bind:key="item.id">
+                <div class="view_line">
+                    <div class="view_en">{{item.en}}</div>
                         <div class="view_ch">
                             <span class="view_category">{{item.category}}</span>
                             <span>{{item.ch}}</span>
                         </div>
-                    </div>
                 </div>
             </div>
-            <div v-if="check==='cte6'">
-                <div class= "view_style" v-for="item in cte6_words" v-bind:key="item.id">
-                    <div class="view_line">
-                        <div class="view_en">{{item.en}}</div>
-                        <div class="view_ch">
-                            <span class="view_category">{{item.category}}</span>
-                            <span>{{item.ch}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <pagination v-if="words" pre-text="上一页" next-text="下一页" @pagefn='pagefn' :page=curpage :totalPage='endpage'></pagination>
         </div>
     </div>    
 </template>
@@ -35,43 +23,44 @@
 <script>
 import { wordslist } from '../axios/axios'
 import headTop from '../components/headTop'
+import pagination from '../components/pagination'
 
 export default {
     data(){
         return{
-            cte4_words:'',
-            cte6_words:'',
-            check:''
+            words:'',
+            curpage:1,
+            endpage:'',
+            type:''
         }
     },
     methods:{
-        cte4(){
-            if(this.$store.state.userInfo.name ==''){
-                this.$message('你还未登入，请登入后使用')
+        words_list(value){
+            if(this.$store.state.userInfo.name==''){
+                this.$message('请登入后在使用')
                 return
             }
-            if(this.cte4_words == ''){
-                wordslist({type:'cte4'}).then((Response)=>{
-                    this.cte4_words = Response.data
-                })
-            }
-            this.check = 'cte4'
-        },
-        cte6(){
-            if(this.$store.state.userInfo.name ==''){
-                this.$message('你还未登入，请登入后使用')
-                return
-            }
-            if(this.cte6_words == ''){
-                wordslist({type:'cte6'}).then((Response)=>{
-                    this.cte6_words = Response.data
+            this.type = value.target.value
+            wordslist({type:this.type,page:this.curpage}).then((Response)=>{
+                this.words = Response.data.results
+                this.endpage = Math.ceil(Response.data.count/8)
             })
-            }
-            this.check = 'cte6'
+            this.curpage = 1
+        },
+        cur_words(curpage){
+            wordslist({type:this.type,page:curpage}).then((Response)=>{
+                this.words = Response.data.results
+            })
+        },
+        pagefn(value){
+            this.curpage = value.page
+            this.cur_words(this.curpage)
         }
     },
+
     components:{
         headTop,
+        pagination
     }
 }
 </script>
@@ -82,6 +71,12 @@ export default {
     padding: 0;
     box-sizing: border-box;
     outline: none;
+}
+.words_content{
+    padding-top: 70px;
+}
+.words_menu{
+    text-align: center;
 }
 .views{
     width: 1144px;

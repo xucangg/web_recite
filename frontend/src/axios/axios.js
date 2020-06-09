@@ -1,10 +1,12 @@
 import axios from 'axios'
 
-let host = 'http://149.28.229.181:8080'
+let host = 'http://localhost:8080'
 
 export const words = () => {return axios.get(`${host}/wordslength/`)}
 
 export const wordslist = params => {return axios.get(`${host}/wordslist/`, {params:params})}
+
+export const changewords = next => {return axios.get(next)}
 
 export const generate = params => {return axios.get(`${host}/model/`, {params:params})}
 

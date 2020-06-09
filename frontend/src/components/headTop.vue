@@ -12,16 +12,10 @@
 			<div class="menu-block"></div>
 			<div class="menu-a">
 				<a class="menu-u" href='/vocabulary'>	
-					<el-dropdown>
 					<div class="menu-s">
 						<img src='../static/svg/words.svg'/>
 						<span class="menu-f">词汇</span>
 					</div>
-						<el-dropdown-menu>
-							<el-dropdown-item>CTE-4</el-dropdown-item>
-							<el-dropdown-item>CTE-6</el-dropdown-item>				
-						</el-dropdown-menu>
-					</el-dropdown>
 				</a>
 			</div>
 			<div class="menu-block"></div>

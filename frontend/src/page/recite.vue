@@ -46,7 +46,7 @@
 
 <script>
 import headTop from '../components/headTop'
-import {generate} from '../axios/axios'
+import {generate,changewords} from '../axios/axios'
 
 export default {
     data(){
@@ -58,6 +58,7 @@ export default {
             hidden: true,
             show: false,
             disp: false,
+            next:null,
         }
     },
  
@@ -69,8 +70,9 @@ export default {
     methods:{
         getwords(){
             this.model = this.$route.params
-            generate({level:this.model.level,num:this.model.num}).then((response)=>{
-                this.words = response.data
+            generate({level:this.model.level,num:this.model.num}).then((response)=>{            
+                this.words = response.data.data
+                this.next = response.data.links.next
             })
         },
 
@@ -122,6 +124,15 @@ export default {
                 this.$message('你还未登入，请登入后使用')
                 return
             }
+            changewords(this.next).then((response)=>{
+                this.words = response.data.data
+                this.next = response.data.links.next
+            })
+            this.anwser = {}
+            this.results = {}
+            this.hidden = true
+            this.show = false
+            this.disp = false
         },
 
         correct_word(){
@@ -151,7 +162,6 @@ export default {
             this.show = false
             this.disp = false
             this.words = random_word
-            console.log(this.words)
             return
         }
 
