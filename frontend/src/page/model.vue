@@ -31,10 +31,10 @@
                 </div>
                 <div>
                     <h3>单词个数</h3>
-                    <input type="text" name='amount' v-model="num" placeholder="最大不超过20个">
+                    <input class="num" type="text" name='amount' v-model="num" placeholder="最大不超过20个">
                 </div>
-                <input type="button" @click="model" value="随机生成单词">
-                <input type="button" @click="model" value="按首字母生成单词">
+                <button  @click="model" value="random">随机生成单词</button>
+                <button  @click="model" value="initial">按首字母生成单词</button>
             </form>
         </div>
     </div>
@@ -50,12 +50,11 @@ export default {
             level: "",
             translate: "",
             num: "",
-            returnWords:""
         }
     },
     
     methods:{
-        model(){
+        model(value){
             if (this.num > 20){
                 alert('最多生成20个单词')
                 this.num = null
@@ -77,6 +76,7 @@ export default {
                 level:this.level,
                 translate:this.translate,
                 num:this.num,
+                model:value.target.value
                 }});
         }
     },
@@ -92,6 +92,9 @@ export default {
 .choose{
     padding-top: 70px;
     text-align: center;
+}
+.num{
+    margin-bottom: 20px;
 }
 
 </style>

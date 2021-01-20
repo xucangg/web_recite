@@ -37,8 +37,8 @@
 							<el-dropdown-item style="pointer-events:none">
 								<p>用户 :<span style="margin-left:5px">{{ userInfo.name }}</span></p>
 							</el-dropdown-item>
-							<el-dropdown-item>个人信息</el-dropdown-item>
-							<a @click="view_wrong_words"><el-dropdown-item>错词查看</el-dropdown-item></a>
+							<a href="/personal"><el-dropdown-item>个人信息</el-dropdown-item></a>
+							<a href="/reviewWords"><el-dropdown-item>错词复习</el-dropdown-item></a>
 							<a @click="logout"><el-dropdown-item>退出登录</el-dropdown-item></a>
 						</el-dropdown-menu>
 						<el-dropdown-menu v-else>
@@ -68,10 +68,6 @@ export default {
 			this.$store.dispatch('setInfo')
 			this.$router.push('/login')
 		},
-
-		view_wrong_words(){
-
-		}
 	}
 
 }
@@ -88,7 +84,7 @@ export default {
     position: fixed;
     right: 0;
     top: 0;
-	height: 70px;
+	height: 60px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

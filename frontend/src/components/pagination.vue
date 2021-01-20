@@ -30,21 +30,29 @@ export default {
     methods:{
         pagina(curpage,endpage){
             var pages = []
-            if(curpage<=1 && endpage===1) {pages.push({text:endpage,active:true});return pages}
+            /*当总页数为1当前页数为1时返回分页*/
+            if(curpage<=1 && endpage===1) {pages.push({text:endpage,active:true});return pages} 
             var d = 1
-            curpage-1===0?pages.push({text:this.preText,index_nomore:true}):pages.push({page:curpage-1,text:this.preText})
+            /*当前页不等于1时，添加上一页可以点击页*/
+            curpage===1?pages.push({page:1,text:this.preText,index_nomore:true}):pages.push({page:curpage-1,text:this.preText})
+            /*当前页面大于4，添加分页内容，第一页标签页，和省略号*/
             if(curpage>4) d = curpage-2,pages.push({page:1,text:1}),pages.push({text:'...',banclick:true})
+            /*添加当前页的前两页可点击分页*/
             if(endpage-curpage>=0 && curpage>=1) for(; d<curpage;d++) pages.push({page:d,text:d})
+            /*添加当前页*/
             pages.push({page:curpage,text:curpage,active:true})
             var e = 1
+            /*当前页到末页还剩3页或小于3页，添加当前页到末页的可点击页*/
             if(endpage-curpage<=3){e = curpage+1;for(;e<=endpage;e++) pages.push({page:e,text:e})}
+            /*当前页到末页大于3页，添加当前页后两页，省略号和末页*/
             if(endpage-curpage>3){
                 e = curpage+1;
                 for(;e<=curpage+2;e++){pages.push({page:e,text:e})}
                 pages.push({text:'...',banclick:true})
                 pages.push({page:endpage,text:endpage})
                 }
-            curpage-endpage===0?pages.push({text:this.nextText,index_nomore:true}):pages.push({page:curpage+1,text:this.nextText})
+            /*当前页选择到末页时，添加下一页不可点样式，为选择到末页，添加下一页可点击页*/
+            curpage-endpage===0?pages.push({page:endpage,text:this.nextText,index_nomore:true}):pages.push({page:curpage+1,text:this.nextText})
             return pages
         },
         pageCallback:function(page){

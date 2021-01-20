@@ -17,22 +17,25 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework import routers
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 
-from manager.views import UserViewset
 
+from manager.views import UserViewset, UserInfoViewSet
+from user_operation.views import AW4ViewSet, A4ViewSet
 
-router = DefaultRouter()
-router.register('user', UserViewset, base_name="user")
+router = SimpleRouter()
+router.register('user', UserViewset, basename='user')
+router.register('userinfo', UserInfoViewSet, basename='userinfo')
+router.register('useraw', AW4ViewSet, basename='userw')
+router.register('userlearned', A4ViewSet, basename='userlearned')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
     path('', include('backend.urls')),
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api-token-auth/', views.obtain_auth_token),
-    path('login/', obtain_jwt_token)
+    path('login/', obtain_jwt_token),
 ]

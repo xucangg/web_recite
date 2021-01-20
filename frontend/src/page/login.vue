@@ -16,6 +16,7 @@
                     <div class="error btns" id="jsMobileTips"></div>
                     <div class="auto-box marb8"></div>
                     <input class="btn btn-green" id="jsMobileRegBtn" @click=login type="button" value="登录">
+                    <p class='form-p'>没有账号？ <a href='/register'>[来注册吧]</a></p>
             </form>
     </div>
     </div>
@@ -41,9 +42,9 @@ export default{
                 password:this.password
                 }
             login(info).then((Response)=>{
-                console.log(Response.data)
                 cookie.setCookie('name',Response.data.username,1)
                 cookie.setCookie('token',Response.data.token,1)
+                console.log(Response.data)
                 that.$store.dispatch('setInfo')
                 that.$router.push({ name: 'home'})
             }).catch(function(error){
@@ -157,12 +158,10 @@ export default{
 }
 .unslider-arrow.prev {
     left: 0;
-
 }
 
 .unslider-arrow.next{
     right:0;
-
 }
 
 .hd-login > h1{

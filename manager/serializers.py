@@ -4,7 +4,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
 
 from backend.models import Cte4, Cte6
-from manager.models import MyUser
+from manager.models import UserInfo
 
 User = get_user_model()
 
@@ -13,10 +13,15 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = '__all__'
 
+class InfoSerializer(ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = '__all__'
+
 class UserRegSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = MyUser
+        model = User
         fields = ('email', 'username', 'password')
 
     username = serializers.CharField(

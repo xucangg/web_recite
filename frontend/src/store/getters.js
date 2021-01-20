@@ -5,3 +5,7 @@ export const userInfo = state =>{
 export const userSaveWords = state =>{
     return state.userSaveWords
 }
+
+export const wordsnum = state =>{
+    return state.wordsnum
+}

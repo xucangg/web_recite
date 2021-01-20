@@ -46,7 +46,7 @@
 
 <script>
 import headTop from '../components/headTop'
-import {generate,changewords} from '../axios/axios'
+import {generate,useraw,next,userlearned} from '../axios/axios'
 
 export default {
     data(){
@@ -70,13 +70,19 @@ export default {
     methods:{
         getwords(){
             this.model = this.$route.params
-            generate({level:this.model.level,num:this.model.num}).then((response)=>{            
-                this.words = response.data.data
-                this.next = response.data.links.next
+            generate({level:this.model.level,num:this.model.num,model:this.model.model}).then((response)=>{            
+                this.words = response.data.results
+                this.next = response.data.next
             })
         },
 
         view_result(){
+            let token_str = 'token'+this.$store.state.userInfo.token
+            let info ={
+                headers:{
+                'authorization': token_str.replace('token','JWT ')
+                }
+            } 
             let k_word = Object.keys(this.anwser)
             if(k_word.length != this.words.length){
                 this.$message("请填写完所有单词(不会随便填)")
@@ -117,17 +123,26 @@ export default {
             }
             this.hidden = false;
             this.show = true;
+            if(this.$store.state.userInfo.name!=''){
+                for(let i in this.words){
+                    userlearned({cte4:this.words[i]['Id']},info).then((Response)=>{
+                        console.assert(Response)
+                    })
+                }
+            }
         },
 
         change_word(){
+            this.model = this.$route.params
             if(this.$store.state.userInfo.name ==''){
                 this.$message('你还未登入，请登入后使用')
                 return
             }
-            changewords(this.next).then((response)=>{
-                this.words = response.data.data
-                this.next = response.data.links.next
-            })
+            next(this.next).then((response)=>{
+                this.words = response.data.results
+                this.next = response.data.next
+
+            })        
             this.anwser = {}
             this.results = {}
             this.hidden = true
@@ -140,10 +155,32 @@ export default {
         },
 
         save_word(){
+            let token_str = 'token'+this.$store.state.userInfo.token
+            let info ={
+                headers:{
+                'authorization': token_str.replace('token','JWT ')
+                }
+            }   
             if(this.$store.state.userInfo.name ==''){
                 this.$message('你还未登入，请登入后使用')
                 return
-            }            
+            }
+            for(let i in this.results){
+                if(this.results[i] == false){
+                    for(let j in this.words){
+                        if(this.words[j]['ch']==i || this.words[j]['en']==i){
+                            useraw({save_cte4_words:this.words[j]['Id']},info).then((Response)=>{
+                                console.assert(Response.data)
+                            })
+                        }
+                    }
+                }
+            }
+            this.$notify({
+                title: '成功',
+                message: '保存成功',
+                type: 'success'
+            })
         },
 
         again(){

@@ -3,7 +3,7 @@ var cookie={
         var exdate = new Date();
         exdate.setTime(exdate.getTime()+expiredays);
         exdate.setDate(exdate.getDate() + expiredays);
-        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+        document.cookie = c_name + "=" + value + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
     },
     getCookie(name){
         var arr,reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)")

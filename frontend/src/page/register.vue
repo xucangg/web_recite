@@ -25,7 +25,7 @@
                     <input class="btn btn-green" id="jsMobileRegBtn" @click=register type="button" value="注册并登录">
             </form>
 
-        <p class="form-p">已有账号？ <router-link :to="'/#/login'">[立即登录]</router-link></p>
+        <p class="form-p">已有账号？ <router-link :to="'/login'">[立即登录]</router-link></p>
     </div>
     </div>
     </div>
@@ -63,7 +63,7 @@ export default{
                 that.$router.push({ name: 'home'})
             }).catch(function(error){
                 console.log(error.response)
-                that.error.user_name = error.response.data.user_name?error.response.data.user_name[0]:''
+                that.error.user_name = error.response.data.username?error.response.data.username[0]:''
                 that.error.email = error.response.data.email?error.response.data.email[0]:''
             })
         }
@@ -318,9 +318,8 @@ export default{
 }
 .hide{display: none!important;}
 .form-p{
-    position:absolute;
-    left:40px;
-    bottom:25px;
+    position: initial!important;
+    margin-top: 10px;
 }
 .form-p > a{
     color:#fa8341;

@@ -13,7 +13,7 @@ class Cte6(models.Model):
     Id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     en = models.CharField(max_length=50, verbose_name='english', unique=True)
     ch = models.CharField(max_length=100, verbose_name='中文', unique=True)
-    category = models.CharField(max_length=5, verbose_name='分类')
+    category = models.CharField(max_length=10, verbose_name='分类')
 
     def __str__(self):
         return self.en

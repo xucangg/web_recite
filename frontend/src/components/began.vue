@@ -25,8 +25,7 @@
 
 <script>
 import {words} from '../axios/axios.js'
-
-
+import cookie from '../static/js/cookie'
 export default {
     data(){
         return{
@@ -42,6 +41,10 @@ export default {
         getWordCount(){
             words().then((Response)=>{
                 this.wordslength = Response.data[0];
+                cookie.setCookie('cte4',this.wordslength.countcte4,1)
+                cookie.setCookie('cte6',this.wordslength.countcte6,1)
+                console.log(this.wordslength)
+                this.$store.dispatch('setInfo')
             });
         },
     }

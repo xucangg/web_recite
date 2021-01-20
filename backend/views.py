@@ -45,22 +45,6 @@ class AcountWords(ListCreateAPIView, RetrieveModelMixin, GenericAPIView):
     pagination_class = None
 
 class ModePagination(PageNumberPagination):
-    def get_paginated_response(self, data):
-        random_words = []
-        while len(data) > int(self.request.GET['num']):
-            word_random = sample(list(data), int(self.request.GET['num']))
-            random_words.extend(word_random)
-            for i in word_random:
-                data.remove(i)
-        random_words.extend(data)
-        return Response({
-            'links':{
-                'next':self.get_next_link(),
-                'previous':self.get_previous_link()
-            },
-            'count':self.page.paginator.count,
-            'data':random_words
-        })
 
     def get_page_size(self, request):
         return request.GET['num']
@@ -68,26 +52,22 @@ class ModePagination(PageNumberPagination):
     max_page_size = 20
     page_size_query_param = 'page_size'
 
-
 class Model(ListCreateAPIView):
-
     def get_queryset(self):
         if self.request.GET['level'] == 'Cte4':
-            c_words = Cte4.objects.all()
-            return c_words
+            if self.request.GET['model'] == 'random':
+                r_words = Cte4.objects.order_by('?')
+                return r_words
+            if self.request.GET['model'] == 'initial':
+                i_words = Cte4.objects.order_by('en')
+                return i_words
         if self.request.GET['level'] == 'Cte6':
-            c_words = Cte6.objects.all()
-            return c_words
-
-
+            if self.request.GET['model'] == 'random':
+                r_words = Cte4.objects.order_by('?')
+                return r_words
+            if self.request.GET['model'] == 'initial':
+                i_words = Cte6.objects.order_by('en')
+                return i_words
 
     serializer_class = WdSerializer
     pagination_class = ModePagination
-
-#class UserLists(ListAPIView):
-#    queryset = MyUser.objects.all()
-#    serializer_class = UserList
-
-#class UserDetail(RetrieveAPIView):
-#    queryset = MyUser.objects.all()
-#    serializer_class = UserList

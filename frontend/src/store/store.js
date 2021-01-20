@@ -14,9 +14,17 @@ const userInfo = {
     token:cookie.getCookie('token')||''
 }
 
+const wordsnum = {
+    cte4:cookie.getCookie('cte4')||'0',
+    cte6:cookie.getCookie('cte6')||'0',
+    toefl:cookie.getCookie('toefl')||'0',
+    ielts:cookie.getCookie('ielts')||'0'
+}
+
 
 const state = {
     userInfo,
+    wordsnum
 }
 
 export default new Vuex.Store({

@@ -6,6 +6,11 @@ import recite from '@/page/recite.vue'
 import register from '@/page/register.vue'
 import login from '@/page/login.vue'
 import vocabulary from '@/page/vocabulary.vue'
+import personal from '@/page/personal.vue'
+import no_resource from '@/components/no_resource.vue'
+import review from '@/page/review.vue'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +45,20 @@ export default new Router({
       path:'/vocabulary',
       name:'vocabulary',
       component: vocabulary,
+    },
+    {
+      path:'/personal',
+      name:'personal',
+      component: personal,
+    },
+    {
+      path:'/reviewWords',
+      name:'reviewWords',
+      component: review,
+    },
+    {
+      path:'*',
+      component: no_resource,
     }
   ]
 })
