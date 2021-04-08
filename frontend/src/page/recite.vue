@@ -77,12 +77,6 @@ export default {
         },
 
         view_result(){
-            let token_str = 'token'+this.$store.state.userInfo.token
-            let info ={
-                headers:{
-                'authorization': token_str.replace('token','JWT ')
-                }
-            } 
             let k_word = Object.keys(this.anwser)
             if(k_word.length != this.words.length){
                 this.$message("请填写完所有单词(不会随便填)")
@@ -123,25 +117,35 @@ export default {
             }
             this.hidden = false;
             this.show = true;
-            if(this.$store.state.userInfo.name!=''){
-                for(let i in this.words){
-                    userlearned({cte4:this.words[i]['Id']},info).then((Response)=>{
-                        console.assert(Response)
-                    })
-                }
-            }
         },
 
         change_word(){
+            let token_str = 'token'+this.$store.state.userInfo.token
+            let info ={
+                headers:{
+                    'authorization': token_str.replace('token','JWT ')
+                }
+            }
             this.model = this.$route.params
             if(this.$store.state.userInfo.name ==''){
                 this.$message('你还未登入，请登入后使用')
                 return
             }
+            if(this.$store.state.userInfo.name!=''){
+                for(let i in this.words){
+                    userlearned({cte4:this.words[i]['Id']},info).then((Response)=>{
+                        console.assert(Response.data)
+                    })
+                }
+            this.$notify({
+                title: '成功',
+                message: '保存成功',
+                type: 'success'
+            })                
+            }
             next(this.next).then((response)=>{
                 this.words = response.data.results
                 this.next = response.data.next
-
             })        
             this.anwser = {}
             this.results = {}

@@ -1,15 +1,19 @@
+import datetime
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
-
+from backend.serializers import WdSerializer
 from  manager.models import UserInfo
 from .models import AddWrongWordsCte4, UserLearnedWordsCte4
-from .serializers import AW4Serializer, Cte4Serializer, A4Serializer, RCte4Serializer
+from .serializers import AW4Serializer, A4Serializer, Cte4Serializer, RCte4Serializer
 
 
+WORDS_TYPE = ['cte4', 'cte6']
+
+#添加错误和展示四级单词
 class AW4ViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, DestroyModelMixin):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
@@ -38,6 +42,7 @@ class AW4ViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, Dest
     def get_queryset(self):
         return AddWrongWordsCte4.objects.filter(user=self.request.user)
 
+#添加已学和展示
 class A4ViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, DestroyModelMixin):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JSONWebTokenAuthentication,)
@@ -65,3 +70,14 @@ class A4ViewSet(viewsets.GenericViewSet, ListModelMixin, CreateModelMixin, Destr
 
     def get_queryset(self):
         return UserLearnedWordsCte4.objects.filter(user=self.request.user)
+
+#近期默写单词
+class CurReciteWords(viewsets.GenericViewSet, ListModelMixin):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (JSONWebTokenAuthentication,)
+    serializer_class = RCte4Serializer
+
+    def get_queryset(self):
+        three_days = datetime.datetime.now()+datetime.timedelta(days=-3)
+        current_words = UserLearnedWordsCte4.objects.filter(user=self.request.user, learn_time__gte=three_days)
+        return current_words

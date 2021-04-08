@@ -23,14 +23,14 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 
 from manager.views import UserViewset, UserInfoViewSet
-from user_operation.views import AW4ViewSet, A4ViewSet
+from user_operation.views import AW4ViewSet, A4ViewSet, CurReciteWords
 
 router = SimpleRouter()
 router.register('user', UserViewset, basename='user')
 router.register('userinfo', UserInfoViewSet, basename='userinfo')
 router.register('useraw', AW4ViewSet, basename='userw')
 router.register('userlearned', A4ViewSet, basename='userlearned')
-
+router.register('usercurlearned', CurReciteWords, basename='usercurlearned')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

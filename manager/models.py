@@ -32,8 +32,6 @@ class UserInfo(models.Model):
     wrong_6words_num = models.IntegerField(default=0)   
     total_learned_num = models.IntegerField(default=0)
     total_wrong_words = models.IntegerField(default=0)
-    current_learn_cte4 = models.IntegerField(default=0)
-    current_learn_cte6 = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = '用户信息'

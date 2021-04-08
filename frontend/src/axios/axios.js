@@ -23,3 +23,5 @@ export const userinfo = params => {return axios.get(`${host}/userinfo/`, params)
 export const userlearned = (params,config) => {return axios.post(`${host}/userlearned/`, params,config)}
 
 export const learnedDetail= (config) => {return axios.get(`${host}/userlearned`, config)}
+
+export const usercurlearned = (config) => {return axios.get(`${host}/usercurlearned`, config)}

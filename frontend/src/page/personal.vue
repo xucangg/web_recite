@@ -44,7 +44,7 @@
                             </li>
                             <li>错词 :<span style="color:#e91e1e;">{{ type_user_words.wrong }}</span>
                             </li>
-                            <li>近期 :<span style="color:#f3cc0c">{{ type_user_words.current }}</span>
+                            <li>近期 :<span style="color:#f3cc0c">{{ cur_num_words }}</span>
                             </li>
                         </ul>
                         <ul class="icon-view">
@@ -63,7 +63,7 @@
 <script>
 import headTop from '../components/headTop'
 import { mapGetters } from 'vuex'
-import { userinfo,wordsdetail,learnedDetail } from '../axios/axios' 
+import { userinfo,wordsdetail,learnedDetail,usercurlearned } from '../axios/axios' 
 import pagination from '../components/pagination'
 
 export default{
@@ -81,6 +81,7 @@ export default{
             html_words:false,
             view_model:'',
             type:'cte4',
+            cur_num_words:'',
         };
     },
 
@@ -97,21 +98,27 @@ export default{
 
     methods:{
         get_words_num(tab){
-        this.type = tab.label.toLowerCase() 
-        this.type_wordsnum = this.$store.state.wordsnum[this.type]
-        if (this.type=='cte4'){
-            this.view_model=''
-            this.html_words=false
-            this.type_user_words['learned'] = this.user_info.learned_cte4_num
-            this.type_user_words['wrong'] = this.user_info.wrong_4words_num
-            this.type_user_words['current'] = this.user_info.current_learn_cte4
-            }
-        if (this.type=='cte6'){
-            this.view_model=''
-            this.html_words=false
-            this.type_user_words['learned'] = this.user_info.learned_cte6_num
-            this.type_user_words['wrong'] = this.user_info.wrong_6words_num
-            this.type_user_words['current'] = this.user_info.current_learn_cte6          
+            this.type = tab.label.toLowerCase() 
+            this.type_wordsnum = this.$store.state.wordsnum[this.type]
+            if (this.type=='cte4'){
+                this.view_model=''
+                this.html_words=false
+                this.get_words = []
+                this.show_words = ''
+                this.endpage = ''                
+                this.type_user_words['learned'] = this.user_info.learned_cte4_num
+                this.type_user_words['wrong'] = this.user_info.wrong_4words_num
+                this.type_user_words['current'] = this.cur_num_words
+                }
+            if (this.type=='cte6'){
+                this.view_model=''
+                this.html_words=false
+                this.get_words = []
+                this.show_words = ''
+                this.endpage = ''
+                this.type_user_words['learned'] = this.user_info.learned_cte6_num
+                this.type_user_words['wrong'] = this.user_info.wrong_6words_num
+                this.type_user_words['current'] = this.cur_num_words        
             }
         },
         get_user_info(){
@@ -123,13 +130,16 @@ export default{
                 }
             }
             userinfo(info).then((Response)=>{
-                this.user_info=Response.data['0']
+                this.user_info = Response.data['0']
                 this.type_user_words = {
                 learned:Response.data['0'].learned_cte4_num,
                 wrong:Response.data['0'].wrong_4words_num,
-                current:Response.data['0'].current_learn_cte4
             }
             })
+            usercurlearned(info).then((Response)=>{
+                this.cur_num_words = Response.data.length
+            })
+            
         },
         f_get_words(model){
             if(this.view_model != ''){
@@ -190,36 +200,51 @@ export default{
     },
     watch:{
         view_model(val){
+            var that = this
             let token_str = 'token'+this.$store.state.userInfo.token
             let info ={
                 headers:{
                 'authorization': token_str.replace('token','JWT ')
                 }
             }
-            if(this.type=='cte4'){
+            var type_proc = function(type, wrong_words){
                 if(val=='learned'){
                     learnedDetail(info).then((Response)=>{
                         for(let i of Response.data){
-                            this.get_words.push(i.cte4)
+                            that.get_words.push(i[type])
                         }
                     })
                     setTimeout(()=>{
-                        this.endpage=Math.ceil(this.get_words.length/15)
-                        this.pagefn({'page':1})
+                        that.endpage=Math.ceil(that.get_words.length/15)
+                        that.pagefn({'page':1})
                     },100)
                 }                        
                 if(val=='wrongwords'){
                     wordsdetail(info).then((Response)=>{
                         for(let i of Response.data){
-                            this.get_words.push(i.save_cte4_words)
+                            that.get_words.push(i[wrong_words])
                         }
                     })
                     setTimeout(()=>{
-                        this.endpage=Math.ceil(this.get_words.length/15)
-                        this.pagefn({'page':1})
+                        that.endpage=Math.ceil(that.get_words.length/15)
+                        that.pagefn({'page':1})
                     },100)
                 }
-            }            
+                if(val=='current'){
+                    usercurlearned(info).then((Response)=>{
+                        for(let i of Response.data){
+                            that.get_words.push(i[type])
+                        }
+                    })
+                    setTimeout(()=>{
+                        that.endpage=Math.ceil(that.get_words.length/15)
+                        that.pagefn({'page':1})
+                    },100)                    
+                }
+            }
+            if(this.type=='cte4'){
+                type_proc('cte4','save_cte4_words')
+            }   
         }
     },
 }
